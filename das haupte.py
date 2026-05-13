@@ -75,16 +75,17 @@ class bildui:
         self.ubaschreiben.grid(row=self.x, column=1) 
         self.doppeltext= tk.Checkbutton(ui,text="doppeltext",variable=self.doppeltextwert, onvalue=1,offvalue=0,fg="#FF0000",bg="#000000")
         self.doppeltext.grid(row=self.x, column=2) 
-        #self.testimg = tk.Label(image=bildedit)
-        #self.test = ImageTk.PhotoImage(bildedit)
+
+
         self.x = self.x +1
         self.pic = tk.Label(ui) 
         self.pic.grid(row=self.x, column=0)
         self.x = self.x +1
     def open(self):
-        print("sddfkpogf.njgf")
+        #print("sddfkpogf.njgf")
         path = self.name.get()
         text = self.textinput.get()
+        fontd = self.fontinput.get() or self.font
         if text!="":
             self.setpicture = Image.open(path)
             self.neuesbild = f"{path}_barbeided.png"
@@ -96,7 +97,7 @@ class bildui:
             b = self.blau.get()  or 0
             self.textcolor=(int(r),int(g),int(b))
             grose = self.fontsize.get() or 30
-            self.configured_font = ImageFont.truetype(self.font, size=int(grose))
+            self.configured_font = ImageFont.truetype(fontd, size=int(grose))
             malen=ImageDraw.Draw(self.setpicture)
             malen.text(self.textcursor,text,font=self.configured_font,fill=(self.textcolor))
             if self.doppeltextwert.get() == 1:
@@ -111,9 +112,9 @@ class bildui:
                     print("MINUS")
                     posx = int(x) - int(self.abstand.get()) 
                     self.textcursor=(posx,int(y))
-                r = self.roth.get()
-                g = self.grunh.get()
-                b = self.blauh.get()
+                r = self.roth.get() or 0
+                g = self.grunh.get() or 0 
+                b = self.blauh.get() or 0
                 self.textcolor=(int(r),int(g),int(b))
                 malen.text(self.textcursor,text,font=self.configured_font,fill=(self.textcolor))
             if self.ubaschreibenwert.get() == 1:
@@ -126,9 +127,6 @@ class bildui:
                 os.remove(self.neuesbild)
                 print("weg")
             else:
-              #  self.setpicture.save(self.setpicture)
-               # self.bild = Image.open(self.setpicture)
-               # print("bhalten")
                 self.setpicture.save(self.neuesbild)
                 self.bild = Image.open(self.neuesbild)
                 print("bhalten")
