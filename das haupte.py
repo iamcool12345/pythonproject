@@ -6,6 +6,7 @@ bildda    = os.path.join(os.path.dirname(__file__) , "718523.png")
 bildedit = Image.open(bildda)
 import os
 import shutil
+import pygame as sounds
 print(bildedit.format, bildedit.size, bildedit.mode)
 
 #"C:\Users\Sebbiarmy\Pictures\0331.mp4 vlcsnap-2026-01-25-20h42m01s288.png"
@@ -84,12 +85,18 @@ class bildui:
         self.pic.grid(row=self.x, column=0)
         self.x = self.x +1
     def open(self):
+        sounds.mixer.init()
+        sounds.mixer.music.load("sounds\ähhhmmmm.mp3")
+        sounds.mixer.music.play()
+        while sounds.mixer.music.get_busy():
+            pass
         #print("sddfkpogf.njgf")
         path = self.name.get()
         text = self.textinput.get()
         fontd = self.fontinput.get() or self.font
         if text!="":
             try:
+
                 self.setpicture = Image.open(path)
                 self.neuesbild = f"{path}_barbeided.png"
                 x= self.posx.get()   or 0
@@ -103,26 +110,35 @@ class bildui:
                 self.configured_font = ImageFont.truetype(fontd, size=int(grose))
                 malen=ImageDraw.Draw(self.setpicture)
                 malen.text(self.textcursor,text,font=self.configured_font,fill=(self.textcolor))
+                self.anzeigeboxschreiben(f"rainer schwingt seinen flotten pinsl und mahlt ezdaller wie ein ArBeiTsSüchTiGeR Oger den TExt {text} auf DeIn BilD")
+
             except Exception as e:
                 self.anzeigeboxschreiben(f"FEHLARRRRRRR gib ezaller fieleicht mal teggsd an!! {e}")
-                
             if self.doppeltextwert.get() == 1:
-                print("es wird doppelt gmacht")
-                richtung = self.wierum.get()
-                print(f"RICHTUNG{richtung}")
-                if richtung == "+":
-                    print("PLUS")
-                    posx = int(self.abstand.get()) + int(x)
-                    self.textcursor=(posx,int(y))
-                else:
-                    print("MINUS")
-                    posx = int(x) - int(self.abstand.get()) 
-                    self.textcursor=(posx,int(y))
-                r = self.roth.get() or 0
-                g = self.grunh.get() or 0 
-                b = self.blauh.get() or 0
-                self.textcolor=(int(r),int(g),int(b))
-                malen.text(self.textcursor,text,font=self.configured_font,fill=(self.textcolor))
+                try:
+                    print("es wird doppelt gmacht")
+                    richtung = self.wierum.get()
+                    print(f"RICHTUNG{richtung}")
+                    if richtung == "+":
+                        print("PLUS")
+                        posx = int(self.abstand.get()) + int(x)
+                        self.textcursor=(posx,int(y))
+                    else:
+                        print("MINUS")
+                        posx = int(x) - int(self.abstand.get()) 
+                        self.textcursor=(posx,int(y))
+                    r = self.roth.get() or 0
+                    g = self.grunh.get() or 0 
+                    b = self.blauh.get() or 0
+                    self.textcolor=(int(r),int(g),int(b))
+                    malen.text(self.textcursor,text,font=self.configured_font,fill=(self.textcolor))
+                    self.anzeigeboxschreiben(f"rainer schwingt seinen flotten pinsl erneut und mahlt ezdaller wie ein ArBeiTsSüchTiGeR Oger den TExt {text} nochma auf DeIn BilD")
+                except:
+                    self.anzeigeboxschreiben(f"rainer hats net gschafft den text erneut zu schreiben")
+                    sounds.mixer.music.load("sounds\wie_bidde.mp3")
+                    sounds.mixer.music.play()
+                    while sounds.mixer.music.get_busy():
+                        pass
             if self.ubaschreibenwert.get() == 1:
                 self.setpicture.save(self.neuesbild)
                 self.setpicture.close()
@@ -131,6 +147,7 @@ class bildui:
                 self.setpicture = Image.open(path)
                 self.bild = Image.open(path)
                 os.remove(self.neuesbild)
+                self.anzeigeboxschreiben(f"nach der arbeid zermeddlt rainer dein originales bild")
                 print("weg")
             else:
                 self.setpicture.save(self.neuesbild)
@@ -140,10 +157,17 @@ class bildui:
 
         else:
             try:
+
                 self.setpicture = Image.open(path)#.rotate(180)
                 self.testa=ImageTk.PhotoImage(self.setpicture)
+                sounds.mixer.music.load("sounds\drache_lacht_5.mp3")
+                sounds.mixer.music.play()
             except Exception as e:
                 self.anzeigeboxschreiben(f"FEHLARRRRRRR gib ezaller fieleicht mal a dadai an!!{e}")
+                sounds.mixer.music.load("sounds\du_scheiß_idiot_alder.mp3")
+                sounds.mixer.music.play()
+                while sounds.mixer.music.get_busy():
+                    pass
         self.pic.config(image=self.testa)
         self.pic.grid(column=0,row=self.x,columnspan=10)
     def anzeigeboxschreiben(self,text):
@@ -154,9 +178,20 @@ class bildui:
         self.anzeigekasten.insert(tk.END,text)
 
 ui = tk.Tk()
-
+sounds.mixer.init()
+sounds.mixer.music.load("sounds\hagebuddne.mp3")
+sounds.mixer.music.play()
+while sounds.mixer.music.get_busy():
+    pass
+sounds.mixer.music.load("sounds\meddlloid3.mp3")
+sounds.mixer.music.play()
 ui.title("irgendwasmitlangenamen")
 ui.configure(background="#000000")
+def play_sound(a):
+    sounds.mixer.music.load("sounds\yes.mp3")
+    sounds.mixer.music.play()
+
+ui.bind_class("Entry","<KeyRelease>", play_sound)
 #ui.geometry('1920x1000')
 ui.iconbitmap("icon.ico")
 program = bildui(ui)
