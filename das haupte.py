@@ -75,7 +75,9 @@ class bildui:
         self.ubaschreiben.grid(row=self.x, column=1) 
         self.doppeltext= tk.Checkbutton(ui,text="doppeltext",variable=self.doppeltextwert, onvalue=1,offvalue=0,fg="#FF0000",bg="#000000")
         self.doppeltext.grid(row=self.x, column=2) 
-
+        self.anzeigekasten=tk.Listbox(ui,background="#5fa41c",width=100)
+        self.anzeigekasten.grid(row=1, column=6, columnspan=1,rowspan=5)
+        self.anzeigecount = 0;
 
         self.x = self.x +1
         self.pic = tk.Label(ui) 
@@ -87,19 +89,23 @@ class bildui:
         text = self.textinput.get()
         fontd = self.fontinput.get() or self.font
         if text!="":
-            self.setpicture = Image.open(path)
-            self.neuesbild = f"{path}_barbeided.png"
-            x= self.posx.get()   or 0
-            y = self.posy.get()  or 0
-            self.textcursor=(int(x),int(y))
-            r = self.rot.get()   or 0
-            g = self.grun.get()  or 0
-            b = self.blau.get()  or 0
-            self.textcolor=(int(r),int(g),int(b))
-            grose = self.fontsize.get() or 30
-            self.configured_font = ImageFont.truetype(fontd, size=int(grose))
-            malen=ImageDraw.Draw(self.setpicture)
-            malen.text(self.textcursor,text,font=self.configured_font,fill=(self.textcolor))
+            try:
+                self.setpicture = Image.open(path)
+                self.neuesbild = f"{path}_barbeided.png"
+                x= self.posx.get()   or 0
+                y = self.posy.get()  or 0
+                self.textcursor=(int(x),int(y))
+                r = self.rot.get()   or 0
+                g = self.grun.get()  or 0
+                b = self.blau.get()  or 0
+                self.textcolor=(int(r),int(g),int(b))
+                grose = self.fontsize.get() or 30
+                self.configured_font = ImageFont.truetype(fontd, size=int(grose))
+                malen=ImageDraw.Draw(self.setpicture)
+                malen.text(self.textcursor,text,font=self.configured_font,fill=(self.textcolor))
+            except Exception as e:
+                self.anzeigeboxschreiben(f"FEHLARRRRRRR gib ezaller fieleicht mal teggsd an!! {e}")
+                
             if self.doppeltextwert.get() == 1:
                 print("es wird doppelt gmacht")
                 richtung = self.wierum.get()
@@ -133,10 +139,20 @@ class bildui:
             self.testa=ImageTk.PhotoImage(self.bild)
 
         else:
-            self.setpicture = Image.open(path)#.rotate(180)
-            self.testa=ImageTk.PhotoImage(self.setpicture)
+            try:
+                self.setpicture = Image.open(path)#.rotate(180)
+                self.testa=ImageTk.PhotoImage(self.setpicture)
+            except Exception as e:
+                self.anzeigeboxschreiben(f"FEHLARRRRRRR gib ezaller fieleicht mal a dadai an!!{e}")
         self.pic.config(image=self.testa)
         self.pic.grid(column=0,row=self.x,columnspan=10)
+    def anzeigeboxschreiben(self,text):
+        self.anzeigecount = self.anzeigecount +1
+        if self.anzeigecount > 10:
+            self.anzeigekasten.delete(0,'end')
+            self.anzeigecount = 0
+        self.anzeigekasten.insert(tk.END,text)
+
 ui = tk.Tk()
 
 ui.title("irgendwasmitlangenamen")
