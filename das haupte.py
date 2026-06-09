@@ -33,10 +33,17 @@ class bildui:
         self.beschreibung3= tk.Label(ui,text="Wass soln die schrifd sain??? und grose????",background="#FFFFFF",fg="#FF0000") #schrifdart
         self.beschreibung3.grid(row=self.x, column=0, ) 
         self.fontinput =tk.Entry(ui,textvariable="",bg="#ffffff",fg="#000000")#combobox?
+
+
         self.fontinput.grid(row=self.x, column=1, ) 
+        self.fontinputcustom =tk.Entry(ui,textvariable="",bg="#ffffff",fg="#000000")#combobox?
+        self.fontinputcustom.grid(row=self.x, column=2, ) 
         self.fontsize =tk.Entry(ui,textvariable="",bg="#ffffff",fg="#000000")
-        self.fontsize.grid(row=self.x, column=2, ) 
+        self.fontsize.grid(row=self.x, column=3, ) 
         self.x = self.x +1
+
+
+
 
         self.beschreibung4= tk.Label(ui,text="FARBE R/G/B",background="#FFFFFF",fg="#FF0000") #obere Farbe
         self.beschreibung4.grid(row=self.x, column=0,) 
@@ -93,10 +100,12 @@ class bildui:
         #print("sddfkpogf.njgf")
         path = self.name.get()
         text = self.textinput.get()
+        #if was mit combobox leer
         fontd = self.fontinput.get() or self.font
+        #else wenn combobox was ausgwählt
+
         if text!="":
             try:
-
                 self.setpicture = Image.open(path)
                 self.neuesbild = f"{path}_barbeided.png"
                 x= self.posx.get()   or 0
