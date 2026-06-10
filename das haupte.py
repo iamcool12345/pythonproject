@@ -1,6 +1,7 @@
 #fidshg,ikrewgjhitg,hfddfjfkjkjfkdfkjbgkjeidhjdsfkjl,gnjdeijlbgfvjfjesadkjfbhdffkjlfkhdfsjilbkjkjfkjnmjbnmjnhjmikjjucvxkjkucxkjkudhjdfkjawjpogh.bsojugswjuorghsw:dsihyutfgrhfgkfrugfhsw'/riugslrgjrfierislgjfdjbvvbnrhgrhgrughruguerguawp/dlf,b,v,gvndidkiw[g;
 import os
 import tkinter as tk
+from tkinter import ttk
 from PIL import Image, ImageTk, ImageDraw, ImageFont        
 bildda    = os.path.join(os.path.dirname(__file__) , "718523.png") 
 bildedit = Image.open(bildda)
@@ -14,10 +15,10 @@ class bildui:
     def __init__(self,ui):
         self.x = 1
         self.font = "C:/Windows/Fonts/Cantoria MT Std Bold.otf"
-        
+        self.fontfolder = "C:/Windows/Fonts/"
         self.ubaschreibenwert = tk.IntVar()
         self.doppeltextwert = tk.IntVar()
-
+        self.ausgwählteschrift = tk.StringVar()
         self.beschreibung1= tk.Label(ui,text="DADAINOME",background="#FFFFFF",fg="#FF0000") #EINLESUNGSDATEI
         self.beschreibung1.grid(row=self.x, column=0,)                                      
         self.name =tk.Entry(ui,textvariable="",bg="#ffffff",fg="#000000")
@@ -32,11 +33,13 @@ class bildui:
 
         self.beschreibung3= tk.Label(ui,text="Wass soln die schrifd sain??? und grose????",background="#FFFFFF",fg="#FF0000") #schrifdart
         self.beschreibung3.grid(row=self.x, column=0, ) 
-        self.fontinput =tk.Entry(ui,textvariable="",bg="#ffffff",fg="#000000")#combobox?
-
-
+        #self.fontinput =tk.Entry(ui,textvariable="",bg="#ffffff",fg="#000000")#combobox?
+        
+        self.fontinput = ttk.Combobox(ui,textvariable="eigene links >>")
+        self.fontinput['values']= ('eigene links >>','kremlin','Clannad_Round_Regular','13383','lexia_','HammerSickle','')
+        self.fontinput['state'] = 'readonly'
         self.fontinput.grid(row=self.x, column=1, ) 
-        self.fontinputcustom =tk.Entry(ui,textvariable="",bg="#ffffff",fg="#000000")#combobox?
+        self.fontinputcustom =tk.Entry(ui,textvariable="",bg="#ffffff",fg="#000000")
         self.fontinputcustom.grid(row=self.x, column=2, ) 
         self.fontsize =tk.Entry(ui,textvariable="",bg="#ffffff",fg="#000000")
         self.fontsize.grid(row=self.x, column=3, ) 
@@ -100,10 +103,14 @@ class bildui:
         #print("sddfkpogf.njgf")
         path = self.name.get()
         text = self.textinput.get()
-        #if was mit combobox leer
-        fontd = self.fontinput.get() or self.font
+        schrift = self.fontinput.get()
+        print(schrift)
+        if schrift!='eigene links >>': #combobox benuzadefiniert ausgwählt dann die selbst reingschribne nehmen
+            fontd=self.fontfolder+schrift+".ttf"
+        else:
+            fontd = self.fontinputcustom.get() or self.font
         #else wenn combobox was ausgwählt
-
+    
         if text!="":
             try:
                 self.setpicture = Image.open(path)
