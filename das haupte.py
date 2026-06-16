@@ -1,43 +1,51 @@
 #fidshg,ikrewgjhitg,hfddfjfkjkjfkdfkjbgkjeidhjdsfkjl,gnjdeijlbgfvjfjesadkjfbhdffkjlfkhdfsjilbkjkjfkjnmjbnmjnhjmikjjucvxkjkucxkjkudhjdfkjawjpogh.bsojugswjuorghsw:dsihyutfgrhfgkfrugfhsw'/riugslrgjrfierislgjfdjbvvbnrhgrhgrughruguerguawp/dlf,b,v,gvndidkiw[g;
 import os
+
+from win32api import GetSystemMetrics
 import tkinter as tk
 from tkinter import ttk
 from PIL import Image, ImageTk, ImageDraw, ImageFont        
-bildda    = os.path.join(os.path.dirname(__file__) , "718523.png") 
-bildedit = Image.open(bildda)
+#bildda    = os.path.join(os.path.dirname(__file__) , "718523.png") 
+#bildedit = Image.open(bildda)
 import os
 import shutil
 import pygame as sounds
-print(bildedit.format, bildedit.size, bildedit.mode)
-
+#print(bildedit.format, bildedit.size, bildedit.mode)
 #"C:\Users\Sebbiarmy\Pictures\0331.mp4 vlcsnap-2026-01-25-20h42m01s288.png"
 class bildui:
     def __init__(self,ui):
+        self.verkleinerungszahl = 60
+        self.bildschirmhöhe = GetSystemMetrics(1)
+        self.bildschirmbreite = GetSystemMetrics(0)
+        self.verfügbarehöhe = self.bildschirmhöhe /100 * int(self.verkleinerungszahl)
+        print(f"{self.bildschirmbreite}x{self.bildschirmhöhe}")
         self.x = 1
-        self.font = "C:/Windows/Fonts/Cantoria MT Std Bold.otf"
+        #self.font = "C:/Windows/Fonts/Cantoria MT Std Bold.otf"
         self.fontfolder = "C:/Windows/Fonts/"
         self.ubaschreibenwert = tk.IntVar()
         self.doppeltextwert = tk.IntVar()
         self.ausgwählteschrift = tk.StringVar()
-        self.beschreibung1= tk.Label(ui,text="DADAINOME",background="#FFFFFF",fg="#FF0000") #EINLESUNGSDATEI
+
+        self.beschreibung1= tk.Label(ui,text="Bildname: ",background="#FFFFFF",fg="#FF0000") #EINLESUNGSDATEI
         self.beschreibung1.grid(row=self.x, column=0,)                                      
         self.name =tk.Entry(ui,textvariable="",bg="#ffffff",fg="#000000")
         self.name.grid(row=self.x, column=1, columnspan=1) 
         self.x = self.x +1
 
-        self.beschreibung2= tk.Label(ui,text="Wass soln da stehn??",background="#FFFFFF",fg="#FF0000")  #WAS DRAUFGESCHRIEBEN WERDEN SOLL
+        self.beschreibung2= tk.Label(ui,text="Wass soln da stehn??",background="#FFFFFF",fg="#FF0000")
         self.beschreibung2.grid(row=self.x, column=0, ) 
         self.textinput =tk.Entry(ui,textvariable="",bg="#ffffff",fg="#000000")
         self.textinput.grid(row=self.x, column=1,) 
         self.x = self.x +1
 
-        self.beschreibung3= tk.Label(ui,text="Wass soln die schrifd sain??? und grose????",background="#FFFFFF",fg="#FF0000") #schrifdart
+        self.beschreibung3= tk.Label(ui,text="Wass soln die schrift sein??? und gröse????",background="#FFFFFF",fg="#FF0000") #schriftart
         self.beschreibung3.grid(row=self.x, column=0, ) 
         #self.fontinput =tk.Entry(ui,textvariable="",bg="#ffffff",fg="#000000")#combobox?
         
         self.fontinput = ttk.Combobox(ui,textvariable="eigene links >>")
-        self.fontinput['values']= ('eigene links >>','kremlin','Clannad_Round_Regular','13383','lexia_','HammerSickle','')
+        self.fontinput['values']= ('eigene links angeben >>','kremlin','Clannad_Round_Regular','13383','lexia_','HammerSickle','')
         self.fontinput['state'] = 'readonly'
+        self.fontinput.index(2)
         self.fontinput.grid(row=self.x, column=1, ) 
         self.fontinputcustom =tk.Entry(ui,textvariable="",bg="#ffffff",fg="#000000")
         self.fontinputcustom.grid(row=self.x, column=2, ) 
@@ -66,8 +74,13 @@ class bildui:
         self.grunh.grid(row=self.x, column=2,sticky="W") 
         self.blauh =tk.Entry(ui,textvariable="",bg="#ffffff",fg="#000000")
         self.blauh.grid(row=self.x, column=3) 
-        self.wierum =tk.Entry(ui,textvariable="",bg="#ffffff",fg="#000000")
-        self.wierum.grid(row=self.x, column=4) 
+        self.doppeltextrichtung = ttk.Combobox(ui,textvariable="vorwärts")
+        self.doppeltextrichtung['values']= ('vorwärts','rückwärts')
+        self.doppeltextrichtung['state'] = 'readonly'
+        self.doppeltextrichtung.grid(row=self.x, column=4) 
+        self.doppeltextrichtung.index(0)
+   #     self.wierum =tk.Entry(ui,textvariable="",bg="#ffffff",fg="#000000")
+    #    self.wierum.grid(row=self.x, column=4) 
         self.x = self.x +1
 
         self.beschreibung4= tk.Label(ui,text="POSITION X/Y Abstand schib",background="#FFFFFF",fg="#FF0000")
@@ -133,9 +146,9 @@ class bildui:
             if self.doppeltextwert.get() == 1:
                 try:
                     print("es wird doppelt gmacht")
-                    richtung = self.wierum.get()
+                    richtung = self.doppeltextrichtung.get()
                     print(f"RICHTUNG{richtung}")
-                    if richtung == "+":
+                    if richtung == "vorwärts":
                         print("PLUS")
                         posx = int(self.abstand.get()) + int(x)
                         self.textcursor=(posx,int(y))
@@ -155,7 +168,7 @@ class bildui:
                     sounds.mixer.music.play()
                     while sounds.mixer.music.get_busy():
                         pass
-            if self.ubaschreibenwert.get() == 1:
+            if self.ubaschreibenwert.get() == 1:#altes überschreiben
                 self.setpicture.save(self.neuesbild)
                 self.setpicture.close()
                 os.remove(path)
@@ -170,22 +183,51 @@ class bildui:
                 self.bild = Image.open(self.neuesbild)
                 print("bhalten")
             self.testa=ImageTk.PhotoImage(self.bild)
+    ##    else:
+        try:
+            self.setpicture = Image.open(path)#.rotate(180)
+            self.testa=ImageTk.PhotoImage(self.setpicture)  
+            höhe = self.testa.height()
+            breite = self.testa.width()
+            
+            if höhe>self.verfügbarehöhe:
+            #    self.setpicture
+                self.setpicture.close()
+            #while höhe > self.verfügbarehöhe:
+            #if breite > int(höhe*1.5):
+           #     breite = int(breite/100*int(self.verkleinerungszahl-30))
+            #    print("viel zu gros!")
+            #else:
+            breite = int(breite/100*int(self.verkleinerungszahl))
+            print("zu gros!")
+            höhe = int(self.verfügbarehöhe)
+            self.setpicture = Image.open(path).resize((int(breite),int(höhe)))
+            if breite > self.bildschirmbreite:
+                breite = self.bildschirmbreite#int(breite/100*int(self.verkleinerungszahl))
+                print("immer noch zu gros!")
+                höhe = int(self.verfügbarehöhe)
+                self.setpicture = Image.open(path).resize((int(breite),int(höhe)))
+            self.testa=ImageTk.PhotoImage(self.setpicture)
+            höhe = self.testa.height()
+            breite = self.testa.width()
+            
+            self.pic.config(image=self.testa)
+            self.pic.grid(column=0,row=self.x,columnspan=10)
+            self.anzeigeboxschreiben(f"Die auflösung des bilds ist:『{self.testa.width()}x{self.testa.height()}』")
+            sounds.mixer.music.load("sounds\drache_lacht_5.mp3")
+            sounds.mixer.music.play()
+        except Exception as e:
+            self.anzeigeboxschreiben(f"FEHLARRRRRRR gib ezaller fieleicht mal a dadai an!!{e}")
+            sounds.mixer.music.load("sounds\du_scheiß_idiot_alder.mp3")
+            sounds.mixer.music.play()
+            while sounds.mixer.music.get_busy():
+                pass
 
-        else:
-            try:
 
-                self.setpicture = Image.open(path)#.rotate(180)
-                self.testa=ImageTk.PhotoImage(self.setpicture)
-                sounds.mixer.music.load("sounds\drache_lacht_5.mp3")
-                sounds.mixer.music.play()
-            except Exception as e:
-                self.anzeigeboxschreiben(f"FEHLARRRRRRR gib ezaller fieleicht mal a dadai an!!{e}")
-                sounds.mixer.music.load("sounds\du_scheiß_idiot_alder.mp3")
-                sounds.mixer.music.play()
-                while sounds.mixer.music.get_busy():
-                    pass
-        self.pic.config(image=self.testa)
-        self.pic.grid(column=0,row=self.x,columnspan=10)
+#####hier war vorher
+
+        
+        
     def anzeigeboxschreiben(self,text):
         self.anzeigecount = self.anzeigecount +1
         if self.anzeigecount > 10:
@@ -204,9 +246,10 @@ sounds.mixer.music.play()
 ui.title("irgendwasmitlangenamen")
 ui.configure(background="#000000")
 def play_sound(a):
+    #print(a)
+    print(f"jemand schreibt {a.keysym}")
     sounds.mixer.music.load("sounds\yes.mp3")
     sounds.mixer.music.play()
-
 ui.bind_class("Entry","<KeyRelease>", play_sound)
 #ui.geometry('1920x1000')
 ui.iconbitmap("icon.ico")
