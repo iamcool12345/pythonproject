@@ -9,6 +9,7 @@ import pygame as sounds
 ogerbild = os.path.join(os.path.dirname(__file__) , "oger.png") 
 class bildui:
     def __init__(self,ui):
+        self.font = "C:/Windows/Fonts/Cantoria MT Std Bold.otf"
         self.verkleinerungszahl = 60
         self.bildschirmhöhe = GetSystemMetrics(1)
         self.bildschirmbreite = GetSystemMetrics(0)
@@ -109,10 +110,12 @@ class bildui:
         text = self.textinput.get()
         schrift = self.fontinput.get()
         print(schrift)
-        if schrift!='eigene links >>': 
-            fontd=self.schriftenordner+schrift+".ttf"
+        if schrift!='eigene links angeben >>': 
+            schriftart=self.schriftenordner+schrift+".ttf"
+            print(f"die verwendete schriftart ist {schriftart}")
         else:
-            fontd = self.fontinputcustom.get() or self.font
+            schriftart = self.fontinputcustom.get() or self.font
+            print(f"die verwendete schriftart ist {schriftart}")
         if text!="":
             try:
                 self.setpicture = Image.open(path)
@@ -125,13 +128,12 @@ class bildui:
                 b = self.blau.get()  or 0
                 self.textcolor=(int(r),int(g),int(b))
                 grose = self.fontsize.get() or 30
-                self.configured_font = ImageFont.truetype(fontd, size=int(grose))
+                self.configured_font = ImageFont.truetype(schriftart, size=int(grose))
                 malen=ImageDraw.Draw(self.setpicture)
                 malen.text(self.textcursor,text,font=self.configured_font,fill=(self.textcolor))
                 self.anzeigeboxschreiben(f"rainer schwingt seinen flotten pinsl und mahlt ezdaller wie ein ArBeiTsSüchTiGeR Oger den TExt {text} auf DeIn BilD")
-
             except Exception as e:
-                self.anzeigeboxschreiben(f"FEHLARRRRRRR gib ezaller fieleicht mal teggsd an!! {e}")
+                self.anzeigeboxschreiben(f"FEHLARRRRRRR: {e}")
                 sounds.mixer.music.load("sounds/wie_bidde.mp3")
             if self.doppeltextwert.get() == 1:
                 try:
@@ -173,14 +175,14 @@ class bildui:
                 self.setpicture.save(self.neuesbild)
                 self.bild = Image.open(self.neuesbild)
                 print("bhalten")
-            self.testa=ImageTk.PhotoImage(self.bild)
+            self.angezeigtesbild=ImageTk.PhotoImage(self.bild)
     ##    else:
         try:
             self.setpicture = Image.open(path)#.rotate(180)
-            self.testa=ImageTk.PhotoImage(self.setpicture)  
-            höhe = self.testa.height()
-            breite = self.testa.width()
-            self.anzeigeboxschreiben(f"Die originale auflösung des bilds ist:『{self.testa.width()}x{self.testa.height()}』")
+            self.angezeigtesbild=ImageTk.PhotoImage(self.setpicture)  
+            höhe = self.angezeigtesbild.height()
+            breite = self.angezeigtesbild.width()
+            self.anzeigeboxschreiben(f"Die originale auflösung des bilds ist:『{self.angezeigtesbild.width()}x{self.angezeigtesbild.height()}』")
             if höhe>self.verfügbarehöhe:
                 self.setpicture.close()
                 breite = int(breite/100*int(self.verkleinerungszahl))
@@ -194,10 +196,10 @@ class bildui:
                 höhe = int(self.verfügbarehöhe)
                 self.setpicture = Image.open(path).resize((int(breite),int(höhe)))
                 self.anzeigeboxschreiben(f"Die erneut verkleinerte angezeigte größe des bilds ist:『{breite}x{höhe}』")
-            self.testa=ImageTk.PhotoImage(self.setpicture)
-            höhe = self.testa.height()
-            breite = self.testa.width()
-            self.pic.config(image=self.testa)
+            self.angezeigtesbild=ImageTk.PhotoImage(self.setpicture)
+            höhe = self.angezeigtesbild.height()
+            breite = self.angezeigtesbild.width()
+            self.pic.config(image=self.angezeigtesbild)
             self.pic.grid(column=0,row=self.x,columnspan=10)
             
             sounds.mixer.music.load("sounds/drache_lacht_5.mp3")
